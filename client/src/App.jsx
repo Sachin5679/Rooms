@@ -1,33 +1,36 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import io from 'socket.io-client'
+import Chat from './Chat'
 import './App.css'
 
+const socket = io.connect('http://localhost:3001')
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [name, setName] = useState("")
+  const [room, setRoom] = useState("")
+
+  const joinRoom = () => {
+    if (name!==""  && room!==""){
+      socket.emit("join_room", room)
+    }
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className=''>
+        <h1 className='text-5xl mb-4'>Start Chatting!</h1>
+        <p className='mb-4'>Enter a name of your choice, and a room number to get started!</p>
+        <input type="text" placeholder='AlwaysConfused' onChange={(e) => {
+          setName(e.target.value)
+        }}/>
+        
+        <input type="text" placeholder='280' onChange={(e) => {
+          setRoom(e.target.value)
+        }}/>
+
+        <button className='bg-teal-400 text-white' onClick={joinRoom}>Join a room</button>     
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Chat socket={socket} name={name} room={room}/>
     </>
   )
 }
