@@ -25,15 +25,15 @@ const Chat = ({ socket, name, room }) => {
   }, [socket]);
 
   return (
-    <div className="h-screen flex flex-col justify-between bg-gray-100">
+    <div className="h-screen flex flex-col justify-between bg-gray-800 text-white">
       <div className="bg-teal-600 p-4">
-        <h1 className="text-2xl text-white">Chat</h1>
+        <h1 className="text-2xl">Chat</h1>
       </div>
       <div className="h-2/3 overflow-y-auto p-4">
         <ScrollToBottom>
           {msgList.map((msgContent, index) => (
             <div key={index} className="mb-2">
-              <p className="text-gray-800">
+              <p>
                 <span className="font-bold">{msgContent.author}:</span>{' '}
                 {msgContent.message}
               </p>
@@ -47,7 +47,7 @@ const Chat = ({ socket, name, room }) => {
           placeholder="Send a message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="flex-grow p-2 border border-teal-300 rounded-l"
+          className="flex-grow p-2 border border-teal-300 rounded-l bg-gray-700 text-white"
         />
         <button
           className="bg-teal-500 text-white p-2 rounded-r"
