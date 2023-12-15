@@ -1,52 +1,63 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import ScrollToBottom from 'react-scroll-to-bottom';
 
-const Chat = ({socket, name, room}) => {
-    const [message, setMessage] = useState("")
-    const [msgList, setMsgList] = useState([])
+const Chat = ({ socket, name, room }) => {
+  const [message, setMessage] = useState('');
+  const [msgList, setMsgList] = useState([]);
 
-    const send = async() => {
-        if (message!==""){
-            const messageData = {
-                room: room,
-                author: name,
-                message: message,
-            }
-            await socket.emit("send_message", messageData)
-            setMsgList((list) => [...list, messageData])
-            setMessage("")
-        }
+  const send = async () => {
+    if (message !== '') {
+      const messageData = {
+        room: room,
+        author: name,
+        message: message,
+      };
+      await socket.emit('send_message', messageData);
+      setMsgList((list) => [...list, messageData]);
+      setMessage('');
     }
+  };
 
-    useEffect(() => {
-        socket.on("recieve_message", (data) => {
-            setMsgList((list) => [...list, data])
-        })    
-    }, [socket])
+  useEffect(() => {
+    socket.on('recieve_message', (data) => {
+      setMsgList((list) => [...list, data]);
+    });
+  }, [socket]);
 
   return (
-    <div className='h-1/2'>
-      <div>
-        <h1 className='text-2xl bg-black text-white'>Live chat</h1>
+    <div className="h-screen flex flex-col justify-between bg-gray-100">
+      <div className="bg-teal-600 p-4">
+        <h1 className="text-2xl text-white">Chat</h1>
       </div>
-      <div className='h-2/3'>
-        {msgList.map((msgContent, index)=>{
-            return (
-                <div key={index}>
-                    <div>
-                        <p>{msgContent.author} : {msgContent.message}</p>
-                    </div>
-                </div>
-            )
-        })}
+      <div className="h-2/3 overflow-y-auto p-4">
+        <ScrollToBottom>
+          {msgList.map((msgContent, index) => (
+            <div key={index} className="mb-2">
+              <p className="text-gray-800">
+                <span className="font-bold">{msgContent.author}:</span>{' '}
+                {msgContent.message}
+              </p>
+            </div>
+          ))}
+        </ScrollToBottom>
       </div>
-      <div className='flex'>
-        <input type="text" placeholder='Send a message' onChange={(e) => {
-            setMessage(e.target.value)
-        }}/>
-        <button className='bg-teal-500 text-white' onClick={send}>&#9658;</button>
+      <div className="flex p-4">
+        <input
+          type="text"
+          placeholder="Send a message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="flex-grow p-2 border border-teal-300 rounded-l"
+        />
+        <button
+          className="bg-teal-500 text-white p-2 rounded-r"
+          onClick={send}
+        >
+          &#9658;
+        </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Chat
+export default Chat;
