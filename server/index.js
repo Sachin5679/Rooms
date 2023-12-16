@@ -13,7 +13,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "https://chatrooms-client.vercel.app",
+        origin: "https://chatrooms-client-jfs6z0ryt-sachin5679.vercel.app",
         methods: ["GET", "POST"], 
         credentials: true,
     },
