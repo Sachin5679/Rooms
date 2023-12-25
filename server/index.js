@@ -18,6 +18,7 @@ const io = new Server(server, {
         methods: ["GET", "POST"], 
         credentials: true,
     },
+    allowEIO3: true,
 });
 
 io.on("connection", (socket) => {
@@ -35,7 +36,6 @@ io.on("connection", (socket) => {
         console.log("User Disconnected", socket.id);
     });
 });
-
 
 
 server.listen(3001, () => {
