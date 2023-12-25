@@ -7,6 +7,7 @@ const { Server } = require('socket.io')
 app.use(cors());
 
 app.use("/", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "https://chatrooms-client.vercel.app");
     res.send("Server is running");
 })
 const server = http.createServer(app);
