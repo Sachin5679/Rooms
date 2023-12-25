@@ -21,6 +21,18 @@ const io = new Server(server, {
     allowEIO3: true,
 });
 
+io.use((socket, next) => {
+    const origin = socket.handshake.headers.origin;
+
+    // Allow connections only from the specified origin
+    if (origin === "https://chatrooms-client.vercel.app") {
+        return next();
+    }
+
+    // Otherwise, reject the connection
+    return next(new Error('Unauthorized origin'));
+});
+
 io.on("connection", (socket) => {
     console.log(`User connected: ${socket.id}`);
     socket.on("join_room", (data) => {
