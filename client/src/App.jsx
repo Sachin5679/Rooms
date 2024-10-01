@@ -3,7 +3,7 @@ import io from 'socket.io-client'
 import Chat from './Chat'
 import './App.css'
 
-const socket = io.connect('https://rooms-v3bz.onrender.com/socket.io/?EIO=4&transport=polling&t=P97rROu')
+const socket = io.connect('https://rooms-v3bz.onrender.com/')
 
 function App() {
   const [name, setName] = useState("")
