@@ -6,7 +6,7 @@ const { Server } = require('socket.io');
 
 // Use CORS middleware
 app.use(cors({
-    origin: "http://localhost:5173", // Allowed origin for development
+    origin: "https://rooms-yv5v.onrender.com/", // Allowed origin for development
     methods: ["GET", "POST"],
     credentials: true, // Allow credentials if needed
 }));
