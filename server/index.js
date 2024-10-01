@@ -1,31 +1,38 @@
 const express = require('express');
 const app = express();
 const http = require('http');
-const cors = require("cors");
-const { Server } = require('socket.io')
+const cors = require('cors');
+const { Server } = require('socket.io');
 
-app.use(cors());
+// Use CORS middleware
+app.use(cors({
+    origin: "http://localhost:5173", // Allowed origin for development
+    methods: ["GET", "POST"],
+    credentials: true, // Allow credentials if needed
+}));
 
-app.use("/", (req, res) => {
-    res.header("Access-Control-Allow-Origin", "https://chatrooms-client.vercel.app");
+// Simple route to check server status
+app.get("/", (req, res) => {
     res.send("Server is running");
-})
+});
+
 const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "https://chatrooms-client.vercel.app",
-        methods: ["GET", "POST"], 
+        origin: "http://localhost:5173", // Allowed origin for socket.io
+        methods: ["GET", "POST"],
         credentials: true,
     },
     allowEIO3: true,
 });
 
+// Middleware for socket.io
 io.use((socket, next) => {
     const origin = socket.handshake.headers.origin;
 
     // Allow connections only from the specified origin
-    if (origin === "https://chatrooms-client.vercel.app") {
+    if (origin === "http://localhost:5173") {
         return next();
     }
 
@@ -33,24 +40,25 @@ io.use((socket, next) => {
     return next(new Error('Unauthorized origin'));
 });
 
+// Socket.io connection logic
 io.on("connection", (socket) => {
     console.log(`User connected: ${socket.id}`);
+
     socket.on("join_room", (data) => {
         socket.join(data);
         console.log(`User with id ${socket.id} joined room ${data}`);
-    })
+    });
 
     socket.on("send_message", (data) => {
-        socket.to(data.room).emit("recieve_message", data)
-    })
+        socket.to(data.room).emit("recieve_message", data);
+    });
 
     socket.on("disconnect", () => {
         console.log("User Disconnected", socket.id);
     });
 });
 
-
+// Start the server
 server.listen(3001, () => {
     console.log("Server running on port 3001");
 });
-
