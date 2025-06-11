@@ -1,7 +1,3 @@
-Sure! Here's an improved version of your README in markdown format while preserving the original video link:
-
----
-
 # 📱 Rooms — Real-time Chat App
 
 **Rooms** is a simple and responsive real-time chat application built using **Node.js**, **Socket.io**, **ReactJS**, and **TailwindCSS**. It allows users to join different chat rooms and exchange messages seamlessly in real-time.
