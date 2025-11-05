@@ -3,7 +3,7 @@ import io from 'socket.io-client'
 import Chat from './Chat'
 import './App.css'
 
-const socket = io.connect('https://rooms-v3bz.onrender.com/')
+const socket = io.connect('http://localhost:3001')
 
 function App() {
   const [name, setName] = useState("")
@@ -51,7 +51,7 @@ function App() {
           </button>
         </div>
       ) : (
-        <Chat socket={socket} name={name} room={room} />
+        <Chat socket={socket} name={name} room={room} onExit={() => setChat(false)}/>
       )}
     </>
   );
